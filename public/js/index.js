@@ -2,30 +2,26 @@ var socket = io();
 
 socket.on('connect', function () {
     console.log('connected to server');
-
-    // socket.emit('createEmail', {
-    //     to: 'me@some.com',
-    //     text: 'hey'
-    // });
-
-    // socket.emit('createMessage', {
-    //     message: 'create a message'
-    // });
-
-});
-
-socket.on('adminMessages', function(message) {
-    console.log(message);
 });
 
 socket.on('disconnect', function () {
     console.log('disconnected from server');
 });
 
-// socket.on('newEmail', function(email) {
-//     console.log('new email: ', email);
-// });
-
 socket.on('newMessage', function(message) {
+    var chatContainer = $("#messages");
+    var newMessage = $('<li></li>');
+    newMessage.html(`<b>${message.from}</b>: <i>${message.text}</i>`);
+    chatContainer.append(newMessage);
     console.log('newMessage: ', message);
+});
+
+jQuery("#message-form").on('submit', function(e) {
+    e.preventDefault();
+    socket.emit('createMessage', {
+        from: 'Jatinder',
+        text: $('[name=message]').val()
+    }, function(ack) {
+        console.log(ack)
+    });
 });
