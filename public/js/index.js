@@ -14,6 +14,10 @@ socket.on('connect', function () {
 
 });
 
+socket.on('adminMessages', function(message) {
+    console.log(message);
+});
+
 socket.on('disconnect', function () {
     console.log('disconnected from server');
 });

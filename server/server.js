@@ -22,11 +22,25 @@ io.on('connection', (socket) => {
     //     message: 'hey wattup'
     // });
 
+    socket.emit('adminMessages', {
+        from: "admin",
+        message: "welcome to the chat app"
+    });
+
+    socket.broadcast.emit('adminMessages', {
+        from: 'admin',
+        message: 'new user joined'
+    });
+
     socket.on('createMessage', (message) => {
         console.log('createMessage: ', message);
         //broadcast message
-        io.emit('newMessage', {
-            message: `broadcasted this message \n ${message.message} `
+        // io.emit('newMessage', {
+        //     message: `broadcasted this message \n ${message.message} `
+        // });
+
+        socket.broadcast.emit('newMessage', {
+            message: 'some message broadcast'
         });
     });
     // socket.on('createEmail', (newEmail) => {
