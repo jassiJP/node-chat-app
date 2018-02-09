@@ -33,6 +33,7 @@ jQuery("#message-form").on('submit', function(e) {
         from: 'Jatinder',
         text: $('[name=message]').val()
     }, function(ack) {
+        $('[name=message]').val('');
         console.log(ack)
     });
 });
@@ -40,16 +41,23 @@ jQuery("#message-form").on('submit', function(e) {
 var locationButton = $('#send-location');
 
 locationButton.on('click', function () {
+    var $this = $(this);
+
     if (!navigator.geolocation) {
         return alert('Geolocation not supported by your browser');
     }
+
+    $this.attr("disabled", "disabled");
 
     navigator.geolocation.getCurrentPosition(function (position) {
         socket.emit('createLocationMessage', {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude
         });
+
+        $this.attr("disabled", false);
     }, function () {
+        $this.attr("disabled", false);
         alert('Unable to fetch location');
     });
 }); 
