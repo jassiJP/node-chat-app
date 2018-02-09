@@ -2,6 +2,7 @@ const path = require('path');
 const http = require('http');
 const express = require('express');
 const socketIO = require('socket.io');
+const {generateMessage} = require('./utils/message');
 
 const publicPath = path.join(__dirname, '../public');
 const port = process.env.PORT || 3000;
@@ -22,15 +23,9 @@ io.on('connection', (socket) => {
     //     message: 'hey wattup'
     // });
 
-    socket.emit('adminMessages', {
-        from: "admin",
-        message: "welcome to the chat app"
-    });
+    socket.emit('newMessage', generateMessage('Admin', 'Welcome to chat app'));
 
-    socket.broadcast.emit('adminMessages', {
-        from: 'admin',
-        message: 'new user joined'
-    });
+    socket.broadcast.emit('newMessage', generateMessage('Admin', 'New user joined'));
 
     socket.on('createMessage', (message) => {
         console.log('createMessage: ', message);
@@ -39,9 +34,7 @@ io.on('connection', (socket) => {
         //     message: `broadcasted this message \n ${message.message} `
         // });
 
-        socket.broadcast.emit('newMessage', {
-            message: 'some message broadcast'
-        });
+        socket.broadcast.emit('newMessage', generateMessage(message.from, message.text));
     });
     // socket.on('createEmail', (newEmail) => {
     //     console.log('createEmail: ', newEmail);
