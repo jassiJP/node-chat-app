@@ -8,9 +8,9 @@ socket.on('connect', function () {
     //     text: 'hey'
     // });
 
-    socket.emit('createMessage', {
-        message: 'create a message'
-    });
+    // socket.emit('createMessage', {
+    //     message: 'create a message'
+    // });
 
 });
 

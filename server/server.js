@@ -18,12 +18,16 @@ io.on('connection', (socket) => {
     //     from: 'some@example.com',
     //     text: 'hey what\'s up'
     // });
-    socket.emit('newMessage', {
-        message: 'hey wattup'
-    });
+    // socket.emit('newMessage', {
+    //     message: 'hey wattup'
+    // });
 
     socket.on('createMessage', (message) => {
         console.log('createMessage: ', message);
+        //broadcast message
+        io.emit('newMessage', {
+            message: `broadcasted this message \n ${message.message} `
+        });
     });
     // socket.on('createEmail', (newEmail) => {
     //     console.log('createEmail: ', newEmail);
