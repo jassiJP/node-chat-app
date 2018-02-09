@@ -28,7 +28,7 @@ io.on('connection', (socket) => {
 
     socket.on('createLocationMessage', (coords) => {
         console.log('Got location');
-        io.emit('newLocationMessage', generateLocationMessage('Admin', coords.latitude, coords.longitude));
+        io.emit('newLocationMessage', generateLocationMessage('Jatinder', coords.latitude, coords.longitude));
     });
 
     socket.on('disconnect', () => {

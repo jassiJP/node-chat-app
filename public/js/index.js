@@ -9,24 +9,40 @@ socket.on('disconnect', function () {
 });
 
 socket.on('newMessage', function(message) {
-    var chatContainer = $("#messages");
-    var newMessage = $('<li></li>');
+    var template = $("#message-template").html();
     var formattedTime = moment(message.createdAt).format('h:mm a');
-    newMessage.text(`${message.from} ${formattedTime}: ${message.text}`);
-    chatContainer.append(newMessage);
-    console.log('newMessage: ', message);
+    var html = Mustache.render(template, {
+        text: message.text,
+        from: message.from,
+        createdAt: formattedTime
+    });
+    $("#messages").append(html);
+    // var chatContainer = $("#messages");
+    // var newMessage = $('<li></li>');
+    // var formattedTime = moment(message.createdAt).format('h:mm a');
+    // newMessage.text(`${message.from} ${formattedTime}: ${message.text}`);
+    // chatContainer.append(newMessage);
+    // console.log('newMessage: ', message);
 });
 
 socket.on('newLocationMessage', function(message) {
-    console.log('got location message ', message);
-    var newLocationLi = $('<li></li>');
+    var template = $("#location-message-template").html();
     var formattedTime = moment(message.createdAt).format('h:mm a');
-    var a = $('<a target="_blank">My Current Location</a>');
+    var html = Mustache.render(template, {
+        url: message.url,
+        from: message.from,
+        createdAt: formattedTime,
+    });
+    $("#messages").append(html);
+    // console.log('got location message ', message);
+    // var newLocationLi = $('<li></li>');
+    // var formattedTime = moment(message.createdAt).format('h:mm a');
+    // var a = $('<a target="_blank">My Current Location</a>');
 
-    newLocationLi.text(`${message.from} ${formattedTime}: `);
-    a.attr('href', message.url);
-    newLocationLi.append(a);
-    $("#messages").append(newLocationLi);
+    // newLocationLi.text(`${message.from} ${formattedTime}: `);
+    // a.attr('href', message.url);
+    // newLocationLi.append(a);
+    // $("#messages").append(newLocationLi);
 });
 
 jQuery("#message-form").on('submit', function(e) {
