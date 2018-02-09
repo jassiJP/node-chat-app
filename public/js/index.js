@@ -42,11 +42,13 @@ var locationButton = $('#send-location');
 
 locationButton.on('click', function () {
     var $this = $(this);
+    var btnText = $this.text();
 
     if (!navigator.geolocation) {
         return alert('Geolocation not supported by your browser');
     }
 
+    $this.text("Sending...");
     $this.attr("disabled", "disabled");
 
     navigator.geolocation.getCurrentPosition(function (position) {
@@ -55,8 +57,11 @@ locationButton.on('click', function () {
             longitude: position.coords.longitude
         });
 
+
+        $this.text(btnText);
         $this.attr("disabled", false);
     }, function () {
+        $this.text(btnText);
         $this.attr("disabled", false);
         alert('Unable to fetch location');
     });
